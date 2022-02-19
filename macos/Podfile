@@ -16,22 +16,3 @@ target 'vincu-macOS' do
 
   # Pods specifically for macOS target
 end
-
-target 'vincu-iOS' do
-  platform :ios, '11'
-  use_native_modules!
-  use_react_native!(:path => '../node_modules/react-native-macos')
-
-  # Enables Flipper.
-  #
-  # Note that if you have use_frameworks! enabled, Flipper will not work and
-  # you should disable these next few lines.
-  use_flipper!
-
-  post_install do |installer|
-    flipper_post_install(installer)
-    react_native_post_install(installer)
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
-  end
-  # Pods specifically for iOS target
-end
