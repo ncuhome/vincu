@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useRef } from 'react';
-import { Text, View, TextInput, LayoutRectangle, StyleSheet } from 'react-native';
+import { Text, View, TextInput, LayoutRectangle, StyleSheet, ActivityIndicator, LayoutAnimation } from 'react-native';
 
 import { TouchableOpacity } from '@/components/index';
+import { useColors } from '@/hooks';
 
 export interface HeaderBarProps {
   goBack?: () => void;
@@ -14,6 +15,8 @@ export interface HeaderBarProps {
   onUri: (uri: string) => void;
   onEditing: (editing: boolean) => void;
   onInputLayout: (layout: LayoutRectangle) => void;
+  loading: boolean;
+  editing: boolean;
 }
 
 const HeaderBar: FC<HeaderBarProps> = ({
@@ -26,7 +29,10 @@ const HeaderBar: FC<HeaderBarProps> = ({
   onUri,
   onEditing,
   onInputLayout,
+  loading,
+  editing,
 }) => {
+  const colors = useColors();
   const inputRef = useRef<TextInput>(null);
 
   useEffect(() => {
@@ -60,33 +66,68 @@ const HeaderBar: FC<HeaderBarProps> = ({
       <TouchableOpacity style={styles.btnCon} onPress={refresh}>
         <Text>♻️</Text>
       </TouchableOpacity>
-      <TextInput
-        ref={inputRef}
+      {
+        editing &&
+        <View
+          style={[StyleSheet.absoluteFill,
+          {
+            backgroundColor: colors.deepBg,
+          }]}
+        />
+
+      }
+      <View style={{
+        padding: 6,
+        flex: 1,
+        height: '100%',
+        flexDirection: 'row',
+        backgroundColor: colors.deepBg,
+        borderRadius: 32,
+      }}
         onLayout={e => {
-          console.log(e.nativeEvent.layout);
           onInputLayout(e.nativeEvent.layout);
         }}
-        style={{
-          paddingVertical: 4,
-          flex: 1,
-          fontSize: 16,
-        }}
-        defaultValue={uri}
-        onSubmitEditing={({ nativeEvent: { text } }) => {
-          try {
-            const parsed = new URL(text);
-            if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
-              onUri(text);
+      >
+        <TextInput
+          ref={inputRef}
+          style={{
+            flex: 1,
+            fontSize: 16,
+            paddingHorizontal: 4,
+          }}
+          onSubmitEditing={({ nativeEvent: { text } }) => {
+            try {
+              const parsed = new URL(text);
+              if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+                LayoutAnimation.easeInEaseOut();
+                onUri(text);
+              }
+            } catch (e) {
+              console.log(e);
             }
-          } catch (e) {
-            console.log(e);
-          }
-        }}
-        onFocus={() => {
-          onEditing(true);
-        }}
-        onBlur={() => onEditing(false)}
-      />
+          }}
+          onFocus={() => {
+            LayoutAnimation.easeInEaseOut();
+            onEditing(true);
+          }}
+          onBlur={() => {
+            LayoutAnimation.easeInEaseOut();
+            onEditing(false);
+          }}
+          // @ts-ignore
+          enableFocusRing={false}
+          selectTextOnFocus
+          defaultValue={uri}
+          placeholder="Enter URL"
+        />
+        {loading &&
+          <ActivityIndicator style={{
+            position: 'absolute',
+            alignSelf: 'center',
+            right: 8,
+          }} />
+        }
+      </View>
     </View>
   );
 };
