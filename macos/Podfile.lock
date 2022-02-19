@@ -12,6 +12,8 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.66.14)
   - fmt (6.2.1)
   - glog (0.3.5)
+  - hermes-engine (0.9.0)
+  - libevent (2.1.12)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -23,6 +25,12 @@ PODS:
     - DoubleConversion
     - fmt (~> 6.2.1)
     - glog
+  - RCT-Folly/Futures (2021.06.28.00-v2):
+    - boost
+    - DoubleConversion
+    - fmt (~> 6.2.1)
+    - glog
+    - libevent
   - RCTRequired (0.66.14)
   - RCTTypeSafety (0.66.14):
     - FBLazyVector (= 0.66.14)
@@ -189,6 +197,17 @@ PODS:
     - React-logger (= 0.66.14)
     - React-perflogger (= 0.66.14)
     - React-runtimeexecutor (= 0.66.14)
+  - React-hermes (0.66.14):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2021.06.28.00-v2)
+    - RCT-Folly/Futures (= 2021.06.28.00-v2)
+    - React-cxxreact (= 0.66.14)
+    - React-jsi (= 0.66.14)
+    - React-jsiexecutor (= 0.66.14)
+    - React-jsinspector (= 0.66.14)
+    - React-perflogger (= 0.66.14)
   - React-jsi (0.66.14):
     - boost (= 1.76.0)
     - DoubleConversion
@@ -286,6 +305,8 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native-macos/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native-macos/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native-macos/third-party-podspecs/glog.podspec`)
+  - hermes-engine (~> 0.9.0)
+  - libevent (~> 2.1.12)
   - RCT-Folly (from `../node_modules/react-native-macos/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native-macos/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native-macos/Libraries/TypeSafety`)
@@ -296,6 +317,7 @@ DEPENDENCIES:
   - React-Core/RCTWebSocket (from `../node_modules/react-native-macos/`)
   - React-CoreModules (from `../node_modules/react-native-macos/React/CoreModules`)
   - React-cxxreact (from `../node_modules/react-native-macos/ReactCommon/cxxreact`)
+  - React-hermes (from `../node_modules/react-native-macos/ReactCommon/hermes`)
   - React-jsi (from `../node_modules/react-native-macos/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native-macos/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native-macos/ReactCommon/jsinspector`)
@@ -318,6 +340,8 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - fmt
+    - hermes-engine
+    - libevent
 
 EXTERNAL SOURCES:
   boost:
@@ -348,6 +372,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-macos/React/CoreModules"
   React-cxxreact:
     :path: "../node_modules/react-native-macos/ReactCommon/cxxreact"
+  React-hermes:
+    :path: "../node_modules/react-native-macos/ReactCommon/hermes"
   React-jsi:
     :path: "../node_modules/react-native-macos/ReactCommon/jsi"
   React-jsiexecutor:
@@ -393,6 +419,8 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 92a9ef6d3e03ff24cc5f054c9e949bea97f6c550
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 42c4bf47024808486e90b25ea9e5ac3959047641
+  hermes-engine: bf7577d12ac6ccf53ab8b5af3c6ccf0dd8458c5c
+  libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   RCT-Folly: 43adc9ce880eb76792f88c011773cb5c664c1419
   RCTRequired: a9e2af8873217b0c8075c3feeb519988bb0fe366
   RCTTypeSafety: d4d3373567b9a66883cd853f1682fc5cf48c5f64
@@ -401,6 +429,7 @@ SPEC CHECKSUMS:
   React-Core: bd198fb6516394c4dade26c1b10a4579800a246c
   React-CoreModules: 21c8554a207849e7dc76b4f03e304b62c4593733
   React-cxxreact: 721337b940e085dbd18a1412216269dc276bf4e4
+  React-hermes: bf16404a36fc4286d09ded2cb91fed43087bceb1
   React-jsi: 6a46bf76579f3a0fc95391e58ea9676bd10bf444
   React-jsiexecutor: a9ba940f3ee72da4b57f995c58257a776e19eb29
   React-jsinspector: 0b62261c84928d69b73a916b5a3837894529f5eb
@@ -420,6 +449,6 @@ SPEC CHECKSUMS:
   ReactCommon: 52df5c2e4b4bada6cc3bb365eab03f907f43092c
   Yoga: 943375165f29e6c5521dff8ab2d53309e670348f
 
-PODFILE CHECKSUM: f417db774da95f9f1e4b10200b6bb28a1ad1da0a
+PODFILE CHECKSUM: 38d18de6d053424e3bbc1f8aed8d22d8ab7acce2
 
 COCOAPODS: 1.11.2
