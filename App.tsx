@@ -71,7 +71,7 @@ const App = () => {
         }}
         onLoadStart={() => setLoading(true)}
       />
-      {editing && history.length > 0 && (
+      {editing && history.length > 1 && (
         <>
           <View
             style={{
@@ -124,6 +124,7 @@ const App = () => {
             style={[
               StyleSheet.absoluteFill,
               {
+                top: 50,
                 backgroundColor: 'rgba(0, 0, 0, 0.5)',
               },
             ]}
