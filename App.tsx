@@ -8,6 +8,7 @@ import {
   LayoutAnimation,
   StyleSheet,
   ScrollView,
+  useWindowDimensions,
 } from 'react-native';
 import WebView from 'react-native-webview';
 import { debounce } from 'lodash';
@@ -21,6 +22,7 @@ interface HistoryItem {
 }
 
 const App = () => {
+  const { height } = useWindowDimensions();
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
   const [title, setTitle] = useState('');
@@ -103,7 +105,7 @@ const App = () => {
               backgroundColor: colors.deepBg,
               padding: 8,
               borderRadius: 8,
-              maxHeight: 600,
+              maxHeight: height * 0.7,
             }}
           >
             <ScrollView
