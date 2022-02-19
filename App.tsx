@@ -7,11 +7,18 @@ import {
   LayoutRectangle,
   LayoutAnimation,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import WebView from 'react-native-webview';
+import { debounce } from 'lodash';
 
 import { TouchableOpacity, HeaderBar } from '@/components/index';
 import { useColors } from '@/hooks';
+
+interface HistoryItem {
+  uri: string;
+  title: string;
+}
 
 const App = () => {
   const [canGoBack, setCanGoBack] = useState(false);
@@ -19,20 +26,32 @@ const App = () => {
   const [title, setTitle] = useState('');
   const [uri, setUri] = useState('https://github.com/');
   const webviewRef = useRef<WebView>(null);
-  const [history, setHistory] = useState<string[]>([]);
+  const [history, setHistory] = useState<HistoryItem[]>([]);
   const [editing, setEditing] = useState(false);
   const [inputLayout, setInputLayout] = useState<LayoutRectangle>();
   const [historyItemHovering, setHistoryItemHovering] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const [scrolling, setScrolling] = useState(false);
   const colors = useColors();
+
+  const delayHoverTrigger = debounce((i: number) => {
+    LayoutAnimation.easeInEaseOut();
+    setHistoryItemHovering(i);
+  });
 
   useEffect(() => {
     LayoutAnimation.easeInEaseOut();
     setHistory((prevHistory) => {
-      const filtered = prevHistory.filter((item) => item !== uri);
-      return [uri, ...filtered];
+      const filtered = prevHistory.filter((item) => item.uri !== uri);
+      return [
+        {
+          uri,
+          title,
+        },
+        ...filtered,
+      ];
     });
-  }, [uri]);
+  }, [uri, title]);
 
   return (
     <View
@@ -84,41 +103,62 @@ const App = () => {
               backgroundColor: colors.deepBg,
               padding: 8,
               borderRadius: 8,
+              maxHeight: 600,
             }}
           >
-            {history.map(
-              (historyUri, i) =>
-                historyUri !== uri && (
-                  <TouchableOpacity
-                    key={i}
-                    onPress={() => {
-                      LayoutAnimation.easeInEaseOut();
-                      setUri(historyUri);
-                      setEditing(false);
-                    }}
-                    onMouseEnter={() => {
-                      LayoutAnimation.easeInEaseOut();
-                      setHistoryItemHovering(i);
-                    }}
-                    onMouseLeave={() => {
-                      LayoutAnimation.easeInEaseOut();
-                      setHistoryItemHovering(-1);
-                    }}
-                  >
-                    <View
-                      style={{
-                        padding: 8,
-                        margin: 3,
-                        backgroundColor: colors.bg,
-                        borderRadius: 4,
-                        opacity: historyItemHovering === i ? 1 : 0.8,
+            <ScrollView
+              onMomentumScrollEnd={() => {
+                setScrolling(false);
+              }}
+              onMomentumScrollBegin={() => {
+                setScrolling(true);
+              }}
+            >
+              {history.map(
+                (item, i) =>
+                  item.uri !== uri && (
+                    <TouchableOpacity
+                      key={i}
+                      onPress={() => {
+                        if (scrolling) {
+                          return;
+                        }
+                        LayoutAnimation.easeInEaseOut();
+                        setUri(item.uri);
+                        setTitle(item.title);
+                        setEditing(false);
+                      }}
+                      onMouseEnter={() => {
+                        if (scrolling) {
+                          return;
+                        }
+                        delayHoverTrigger(i);
+                      }}
+                      onMouseLeave={() => {
+                        if (scrolling) {
+                          return;
+                        }
+                        delayHoverTrigger(-1);
                       }}
                     >
-                      <Text numberOfLines={1}>{historyUri}</Text>
-                    </View>
-                  </TouchableOpacity>
-                )
-            )}
+                      <View
+                        style={{
+                          padding: 8,
+                          margin: 6,
+                          backgroundColor: colors.bg,
+                          borderRadius: 4,
+                          opacity: historyItemHovering === i ? 1 : 0.8,
+                        }}
+                      >
+                        <Text style={styles.title}>{item.title}</Text>
+                        <Text numberOfLines={1} style={styles.subtitle}>
+                          {item.uri}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  )
+              )}
+            </ScrollView>
           </View>
           <View
             style={[
@@ -135,5 +175,16 @@ const App = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 14,
+  },
+});
 
 export default App;
