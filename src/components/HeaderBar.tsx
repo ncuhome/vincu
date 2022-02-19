@@ -53,30 +53,39 @@ const HeaderBar: FC<HeaderBarProps> = ({
         height: 50,
         alignItems: 'center',
         padding: 10,
+        paddingLeft: editing ? 32 : 10,
         flexDirection: 'row',
       }}
     >
-      <TouchableOpacity style={styles.btnCon} onPress={goBack}>
-        <Text
+      {!editing && (
+        <View
           style={{
-            opacity: canGoBack ? 1 : 0.5,
+            flexDirection: 'row',
           }}
         >
-          👈
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btnCon} onPress={goForward}>
-        <Text
-          style={{
-            opacity: canGoForward ? 1 : 0.5,
-          }}
-        >
-          👉
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btnCon} onPress={refresh}>
-        <Text>♻️</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.btnCon} onPress={goBack}>
+            <Text
+              style={{
+                opacity: canGoBack ? 1 : 0.5,
+              }}
+            >
+              👈
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btnCon} onPress={goForward}>
+            <Text
+              style={{
+                opacity: canGoForward ? 1 : 0.5,
+              }}
+            >
+              👉
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btnCon} onPress={refresh}>
+            <Text>♻️</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       {editing && (
         <View
           style={[
@@ -128,7 +137,6 @@ const HeaderBar: FC<HeaderBarProps> = ({
           }}
           // @ts-ignore
           enableFocusRing={false}
-          selectTextOnFocus
           defaultValue={uri}
           placeholder="Enter URL"
         />
