@@ -6,6 +6,7 @@
     "lint": "eslint .",
     "macos": "react-native run-macos",
     "macos:install": "cd macos && pod install",
+    "macos:release": "npm run macos -- --configuration Release",
     "start": "react-native start",
     "test": "jest"
   },
