@@ -1,5 +1,13 @@
 import React, { FC, useEffect, useRef } from 'react';
-import { Text, View, TextInput, LayoutRectangle, StyleSheet, ActivityIndicator, LayoutAnimation } from 'react-native';
+import {
+  Text,
+  View,
+  TextInput,
+  LayoutRectangle,
+  StyleSheet,
+  ActivityIndicator,
+  LayoutAnimation,
+} from 'react-native';
 
 import { TouchableOpacity } from '@/components/index';
 import { useColors } from '@/hooks';
@@ -46,12 +54,14 @@ const HeaderBar: FC<HeaderBarProps> = ({
         alignItems: 'center',
         padding: 10,
         flexDirection: 'row',
-      }}>
+      }}
+    >
       <TouchableOpacity style={styles.btnCon} onPress={goBack}>
         <Text
           style={{
             opacity: canGoBack ? 1 : 0.5,
-          }}>
+          }}
+        >
           👈
         </Text>
       </TouchableOpacity>
@@ -59,32 +69,34 @@ const HeaderBar: FC<HeaderBarProps> = ({
         <Text
           style={{
             opacity: canGoForward ? 1 : 0.5,
-          }}>
+          }}
+        >
           👉
         </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.btnCon} onPress={refresh}>
         <Text>♻️</Text>
       </TouchableOpacity>
-      {
-        editing &&
+      {editing && (
         <View
-          style={[StyleSheet.absoluteFill,
-          {
-            backgroundColor: colors.deepBg,
-          }]}
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              backgroundColor: colors.deepBg,
+            },
+          ]}
         />
-
-      }
-      <View style={{
-        padding: 6,
-        flex: 1,
-        height: '100%',
-        flexDirection: 'row',
-        backgroundColor: colors.deepBg,
-        borderRadius: 32,
-      }}
-        onLayout={e => {
+      )}
+      <View
+        style={{
+          padding: 6,
+          flex: 1,
+          height: '100%',
+          flexDirection: 'row',
+          backgroundColor: colors.deepBg,
+          borderRadius: 32,
+        }}
+        onLayout={(e) => {
           onInputLayout(e.nativeEvent.layout);
         }}
       >
@@ -120,13 +132,15 @@ const HeaderBar: FC<HeaderBarProps> = ({
           defaultValue={uri}
           placeholder="Enter URL"
         />
-        {loading &&
-          <ActivityIndicator style={{
-            position: 'absolute',
-            alignSelf: 'center',
-            right: 8,
-          }} />
-        }
+        {loading && (
+          <ActivityIndicator
+            style={{
+              position: 'absolute',
+              alignSelf: 'center',
+              right: 8,
+            }}
+          />
+        )}
       </View>
     </View>
   );

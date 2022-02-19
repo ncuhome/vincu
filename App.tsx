@@ -1,12 +1,17 @@
 import 'react-native-url-polyfill/auto';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, View, LayoutRectangle, LayoutAnimation } from 'react-native';
+import {
+  Text,
+  View,
+  LayoutRectangle,
+  LayoutAnimation,
+  StyleSheet,
+} from 'react-native';
 import WebView from 'react-native-webview';
 
 import { TouchableOpacity, HeaderBar } from '@/components/index';
 import { useColors } from '@/hooks';
-
 
 const App = () => {
   const [canGoBack, setCanGoBack] = useState(false);
@@ -24,7 +29,7 @@ const App = () => {
   useEffect(() => {
     LayoutAnimation.easeInEaseOut();
     setHistory((prevHistory) => {
-      const filtered = prevHistory.filter(item => item !== uri);
+      const filtered = prevHistory.filter((item) => item !== uri);
       return [uri, ...filtered];
     });
   }, [uri]);
@@ -33,7 +38,8 @@ const App = () => {
     <View
       style={{
         flex: 1,
-      }}>
+      }}
+    >
       <HeaderBar
         goBack={webviewRef.current?.goBack}
         goForward={webviewRef.current?.goForward}
@@ -66,51 +72,64 @@ const App = () => {
         onLoadStart={() => setLoading(true)}
       />
       {editing && history.length > 0 && (
-        <View
-          style={{
-            width: inputLayout?.width || 0,
-            position: 'absolute',
-            left: inputLayout?.x,
-            top: (inputLayout?.y ?? 0) + 30,
-            overflow: 'visible',
-            zIndex: 1000,
-            backgroundColor: colors.deepBg,
-            padding: 8,
-            borderRadius: 8,
-          }}>
-          {history.map(
-            (historyUri, i) =>
-              historyUri !== uri && (
-                <TouchableOpacity
-                  key={i}
-                  onPress={() => {
-                    LayoutAnimation.easeInEaseOut();
-                    setUri(historyUri);
-                    setEditing(false);
-                  }}
-                  onMouseEnter={() => {
-                    LayoutAnimation.easeInEaseOut();
-                    setHistoryItemHovering(i);
-                  }}
-                  onMouseLeave={() => {
-                    LayoutAnimation.easeInEaseOut();
-                    setHistoryItemHovering(-1);
-                  }}>
-                  <View
-                    style={{
-                      padding: 8,
-                      margin: 3,
-                      backgroundColor: colors.bg,
-                      borderRadius: 4,
-                      opacity: historyItemHovering === i ? 1 : 0.8,
+        <>
+          <View
+            style={{
+              width: inputLayout?.width || 0,
+              position: 'absolute',
+              left: inputLayout?.x,
+              top: (inputLayout?.y ?? 0) + 30,
+              overflow: 'visible',
+              zIndex: 1000,
+              backgroundColor: colors.deepBg,
+              padding: 8,
+              borderRadius: 8,
+            }}
+          >
+            {history.map(
+              (historyUri, i) =>
+                historyUri !== uri && (
+                  <TouchableOpacity
+                    key={i}
+                    onPress={() => {
+                      LayoutAnimation.easeInEaseOut();
+                      setUri(historyUri);
+                      setEditing(false);
+                    }}
+                    onMouseEnter={() => {
+                      LayoutAnimation.easeInEaseOut();
+                      setHistoryItemHovering(i);
+                    }}
+                    onMouseLeave={() => {
+                      LayoutAnimation.easeInEaseOut();
+                      setHistoryItemHovering(-1);
                     }}
                   >
-                    <Text numberOfLines={1}>{historyUri}</Text>
-                  </View>
-                </TouchableOpacity>
-              ),
-          )}
-        </View>
+                    <View
+                      style={{
+                        padding: 8,
+                        margin: 3,
+                        backgroundColor: colors.bg,
+                        borderRadius: 4,
+                        opacity: historyItemHovering === i ? 1 : 0.8,
+                      }}
+                    >
+                      <Text numberOfLines={1}>{historyUri}</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+            )}
+          </View>
+          <View
+            style={[
+              StyleSheet.absoluteFill,
+              {
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              },
+            ]}
+            pointerEvents="none"
+          />
+        </>
       )}
     </View>
   );

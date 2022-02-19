@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --ext .tsx,.ts",
+    "lint:fix": "npm run lint -- --fix",
     "macos": "react-native run-macos",
     "macos:install": "cd macos && pod install",
     "macos:release": "npm run macos -- --configuration Release",
@@ -32,6 +33,7 @@
     "eslint": "7.14.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.66.2",
+    "prettier": "^2.5.1",
     "react-test-renderer": "17.0.2",
     "typescript": "^4.5.5"
   }
