@@ -18,15 +18,17 @@ const App = () => {
     useStore((state) => state);
 
   useEffect(() => {
-    LayoutAnimation.easeInEaseOut();
-    const filtered = history.filter((item) => item.uri !== uri);
-    setHistory([
-      {
-        uri,
-        title,
-      },
-      ...filtered,
-    ]);
+    if (uri.length > 0 && title.length > 0) {
+      LayoutAnimation.easeInEaseOut();
+      const filtered = history.filter((item) => item.uri !== uri);
+      setHistory([
+        {
+          uri,
+          title,
+        },
+        ...filtered,
+      ]);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uri, title]);
 

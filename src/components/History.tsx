@@ -18,9 +18,7 @@ export interface HistoryItem {
   title: string;
 }
 
-export interface HistoryProps {}
-
-const History: FC<HistoryProps> = () => {
+const History: FC = () => {
   const { editing, history, inputLayout, uri, setTitle, setUri, setEditing } =
     useStore((state) => state);
 
@@ -61,9 +59,7 @@ const History: FC<HistoryProps> = () => {
           >
             {history.map(
               (item, i) =>
-                item.uri !== uri &&
-                item.title.length > 0 &&
-                item.uri.length > 0 && (
+                item.uri !== uri && (
                   <TouchableOpacity
                     key={i}
                     onPress={() => {
