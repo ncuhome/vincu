@@ -3,7 +3,6 @@ import {
   Text,
   View,
   TextInput,
-  LayoutRectangle,
   StyleSheet,
   ActivityIndicator,
   LayoutAnimation,
@@ -11,6 +10,7 @@ import {
 
 import { TouchableOpacity } from '@/components/index';
 import { useColors } from '@/hooks';
+import { useStore } from '@/store';
 
 export interface HeaderBarProps {
   goBack?: () => void;
@@ -18,13 +18,6 @@ export interface HeaderBarProps {
   refresh?: () => void;
   canGoBack: boolean;
   canGoForward: boolean;
-  title: string;
-  uri: string;
-  onUri: (uri: string) => void;
-  onEditing: (editing: boolean) => void;
-  onInputLayout: (layout: LayoutRectangle) => void;
-  loading: boolean;
-  editing: boolean;
 }
 
 const HeaderBar: FC<HeaderBarProps> = ({
@@ -33,13 +26,10 @@ const HeaderBar: FC<HeaderBarProps> = ({
   refresh,
   canGoBack,
   canGoForward,
-  uri,
-  onUri,
-  onEditing,
-  onInputLayout,
-  loading,
-  editing,
 }) => {
+  const { editing, uri, setUri, setEditing, setInputLayout, loading } =
+    useStore((state) => state);
+
   const colors = useColors();
   const inputRef = useRef<TextInput>(null);
 
@@ -106,7 +96,7 @@ const HeaderBar: FC<HeaderBarProps> = ({
           borderRadius: 32,
         }}
         onLayout={(e) => {
-          onInputLayout(e.nativeEvent.layout);
+          setInputLayout(e.nativeEvent.layout);
         }}
       >
         <TextInput
@@ -121,19 +111,20 @@ const HeaderBar: FC<HeaderBarProps> = ({
               const parsed = new URL(text);
               if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
                 LayoutAnimation.easeInEaseOut();
-                onUri(text);
+                setUri(text);
               }
             } catch (e) {
+              setUri('');
               console.log(e);
             }
           }}
           onFocus={() => {
             LayoutAnimation.easeInEaseOut();
-            onEditing(true);
+            setEditing(true);
           }}
           onBlur={() => {
             LayoutAnimation.easeInEaseOut();
-            onEditing(false);
+            setEditing(false);
           }}
           // @ts-ignore
           enableFocusRing={false}

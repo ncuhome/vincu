@@ -1,36 +1,33 @@
 import 'react-native-url-polyfill/auto';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { View, LayoutRectangle, LayoutAnimation } from 'react-native';
+import { View, LayoutAnimation, Text } from 'react-native';
 import WebView from 'react-native-webview';
+import { useStore } from '@/store';
 
 import HeaderBar from '@/components/HeaderBar';
-import History, { HistoryItem } from '@/components/History';
+import History from '@/components/History';
 
 const App = () => {
   const webviewRef = useRef<WebView>(null);
 
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
-  const [title, setTitle] = useState('');
-  const [uri, setUri] = useState('https://github.com/');
-  const [history, setHistory] = useState<HistoryItem[]>([]);
-  const [editing, setEditing] = useState(false);
-  const [inputLayout, setInputLayout] = useState<LayoutRectangle>();
-  const [loading, setLoading] = useState(false);
+
+  const { uri, title, history, setLoading, setTitle, setUri, setHistory } =
+    useStore((state) => state);
 
   useEffect(() => {
     LayoutAnimation.easeInEaseOut();
-    setHistory((prevHistory) => {
-      const filtered = prevHistory.filter((item) => item.uri !== uri);
-      return [
-        {
-          uri,
-          title,
-        },
-        ...filtered,
-      ];
-    });
+    const filtered = history.filter((item) => item.uri !== uri);
+    setHistory([
+      {
+        uri,
+        title,
+      },
+      ...filtered,
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uri, title]);
 
   return (
@@ -45,40 +42,37 @@ const App = () => {
         refresh={webviewRef?.current?.reload}
         canGoBack={canGoBack}
         canGoForward={canGoForward}
-        onUri={setUri}
-        uri={uri}
-        title={title}
-        onEditing={setEditing}
-        onInputLayout={setInputLayout}
-        loading={loading}
-        editing={editing}
       />
-      <WebView
-        ref={webviewRef}
-        source={{ uri: uri }}
-        style={{
-          flex: 1,
-          height: '100%',
-          width: '100%',
-        }}
-        onLoadEnd={({ nativeEvent: e }) => {
-          setCanGoBack(e.canGoBack);
-          setCanGoForward(e.canGoForward);
-          setUri(e.url);
-          setTitle(e.title);
-          setLoading(e.loading);
-        }}
-        onLoadStart={() => setLoading(true)}
-      />
-      <History
-        uri={uri}
-        editing={editing}
-        history={history}
-        inputLayout={inputLayout}
-        setUri={setUri}
-        setTitle={setTitle}
-        setEditing={setEditing}
-      />
+      {uri?.length > 0 ? (
+        <WebView
+          ref={webviewRef}
+          source={{ uri }}
+          style={{
+            flex: 1,
+            height: '100%',
+            width: '100%',
+          }}
+          onLoadEnd={({ nativeEvent: e }) => {
+            setCanGoBack(e.canGoBack);
+            setCanGoForward(e.canGoForward);
+            setUri(e.url);
+            setTitle(e.title);
+            setLoading(e.loading);
+          }}
+          onLoadStart={() => setLoading(true)}
+        />
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text>No URL</Text>
+        </View>
+      )}
+      <History />
     </View>
   );
 };
