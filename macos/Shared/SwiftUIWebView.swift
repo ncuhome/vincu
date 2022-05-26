@@ -1,10 +1,11 @@
 /*
- Modifed from https://github.com/globulus/swiftui-webview
+ Modified from https://github.com/globulus/swiftui-webview
  
  Changes:
-    - Add WebViewCoordinator: WKUIDelegate for handling JS alert, prompt
-    - Add contentController: WKUserContentController? arg for WebView
-*/
+ - Add WebViewCoordinator: WKUIDelegate for handling JS alert, prompt
+ - Add contentController: WKUserContentController? arg for WebView
+ - Handle window.open, <a target="__blank" />
+ */
 
 import SwiftUI
 import WebKit
@@ -206,10 +207,10 @@ extension WebViewCoordinator: WKUIDelegate {
     }
     
     public func webView(_ webView: WKWebView,
-        runJavaScriptConfirmPanelWithMessage message: String,
-        initiatedByFrame frame: WKFrameInfo,
-        completionHandler: @escaping (Bool) -> Void) {
-
+                        runJavaScriptConfirmPanelWithMessage message: String,
+                        initiatedByFrame frame: WKFrameInfo,
+                        completionHandler: @escaping (Bool) -> Void) {
+        
         // Set the message as the NSAlert text
         let alert = NSAlert()
         
@@ -219,26 +220,26 @@ extension WebViewCoordinator: WKUIDelegate {
         }
         
         alert.informativeText = message
-
+        
         // Add a confirmation button “OK”
         // and cancel button “Cancel”
         alert.addButton(withTitle: "OK")
         alert.addButton(withTitle: "Cancel")
-
+        
         // Display the NSAlert
         let action = alert.runModal()
-
+        
         // Call completionHandler with true only
         // if the user selected OK (the first button)
         completionHandler(action == .alertFirstButtonReturn)
     }
     
     public func webView(_ webView: WKWebView,
-        runJavaScriptTextInputPanelWithPrompt prompt: String,
-        defaultText: String?,
-        initiatedByFrame frame: WKFrameInfo,
-        completionHandler: @escaping (String?) -> Void) {
-
+                        runJavaScriptTextInputPanelWithPrompt prompt: String,
+                        defaultText: String?,
+                        initiatedByFrame frame: WKFrameInfo,
+                        completionHandler: @escaping (String?) -> Void) {
+        
         // Set the prompt as the NSAlert text
         let alert = NSAlert()
         
@@ -249,7 +250,7 @@ extension WebViewCoordinator: WKUIDelegate {
         
         alert.informativeText = prompt
         alert.addButton(withTitle: "Submit")
-
+        
         // Add an input NSTextField for the prompt
         let inputFrame = NSRect(
             x: 0,
@@ -257,17 +258,27 @@ extension WebViewCoordinator: WKUIDelegate {
             width: 300,
             height: 24
         )
-
+        
         let textField = NSTextField(frame: inputFrame)
         textField.placeholderString = ("Your input")
         alert.accessoryView = textField
-
+        
         // Display the NSAlert
         alert.runModal()
-
+        
         // Call completionHandler with
         // the user input from textField
         completionHandler(textField.stringValue)
+    }
+    
+    // Handle JS window.open, thanks: https://stackoverflow.com/a/66670630
+    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        
+        if navigationAction.targetFrame == nil {
+            webView.load(navigationAction.request)
+        }
+        
+        return nil
     }
     
 }
