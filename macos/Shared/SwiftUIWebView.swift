@@ -5,11 +5,18 @@
  - Add WebViewCoordinator: WKUIDelegate for handling JS alert, prompt
  - Add contentController: WKUserContentController? arg for WebView
  - Handle window.open, <a target="__blank" />
+ - onMessage, handlerName args for WebView for communication between JS and Swift
  */
 
 import SwiftUI
 import WebKit
 import Foundation
+
+public typealias OnMessage = (_ message: WKScriptMessage) -> Void
+
+public enum WebViewHandlerName {
+    case string (String), array ([String])
+}
 
 public enum WebViewAction: Equatable {
     case idle,
@@ -81,10 +88,13 @@ public struct WebViewState: Equatable {
 
 public class WebViewCoordinator: NSObject {
     private let webView: WebView
+    private let onMessage: OnMessage?
+    
     var actionInProgress = false
     
-    init(webView: WebView) {
+    init(webView: WebView, onMessage: OnMessage?) {
         self.webView = webView
+        self.onMessage = onMessage
     }
     
     func setLoading(_ isLoading: Bool,
@@ -283,6 +293,14 @@ extension WebViewCoordinator: WKUIDelegate {
     
 }
 
+extension WebViewCoordinator: WKScriptMessageHandler {
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if let onMessage = onMessage {
+            onMessage(message)
+        }
+    }
+}
+
 public struct WebViewConfig {
     public static let `default` = WebViewConfig()
     
@@ -311,7 +329,6 @@ public struct WebViewConfig {
     }
 }
 
-
 public struct WebView: NSViewRepresentable {
     let config: WebViewConfig
     @Binding var action: WebViewAction
@@ -320,6 +337,8 @@ public struct WebView: NSViewRepresentable {
     let htmlInState: Bool
     let schemeHandlers: [String: (URL) -> Void]
     let contentController: WKUserContentController?
+    let onMessage: OnMessage?
+    let handlerName: WebViewHandlerName?
     
     public init(config: WebViewConfig = .default,
                 action: Binding<WebViewAction>,
@@ -327,7 +346,9 @@ public struct WebView: NSViewRepresentable {
                 restrictedPages: [String]? = nil,
                 htmlInState: Bool = false,
                 schemeHandlers: [String: (URL) -> Void] = [:],
-                contentController: WKUserContentController? = nil) {
+                contentController: WKUserContentController? = nil,
+                onMessage: OnMessage? = nil,
+                handlerName: WebViewHandlerName? = nil) {
         self.config = config
         _action = action
         _state = state
@@ -335,10 +356,12 @@ public struct WebView: NSViewRepresentable {
         self.htmlInState = htmlInState
         self.schemeHandlers = schemeHandlers
         self.contentController = contentController
+        self.onMessage = onMessage
+        self.handlerName = handlerName
     }
     
     public func makeCoordinator() -> WebViewCoordinator {
-        WebViewCoordinator(webView: self)
+        WebViewCoordinator(webView: self, onMessage: self.onMessage)
     }
     
     public func makeNSView(context: Context) -> WKWebView {
@@ -351,7 +374,24 @@ public struct WebView: NSViewRepresentable {
         
         if let ucc = contentController  {
             configuration.userContentController = ucc
+        } else {
+            configuration.userContentController = WKUserContentController()
         }
+        
+        switch handlerName {
+        case .string(let name): do {
+            configuration.userContentController.add(context.coordinator, name: name)
+        }
+        case .array(let names):  do {
+            for name in names {
+                configuration.userContentController.add(context.coordinator, name: name)
+            }
+        }
+        case .none:
+            configuration.userContentController.add(context.coordinator, name: "SwiftUIWebView")
+        }
+        
+        
         
         let webView = WKWebView(frame: CGRect.zero, configuration: configuration)
         webView.navigationDelegate = context.coordinator

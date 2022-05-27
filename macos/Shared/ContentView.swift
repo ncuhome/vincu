@@ -30,12 +30,41 @@ extension String {
 struct ContentView: View {
     @State private var action = WebViewAction.idle
     @State private var state = WebViewState.empty
-    @State private var address = "https://incu.ncuos.com"
-    private var contentController: WKUserContentController
+    @State private var address = "https://incu.ncuos.com/"
+    private let contentController: WKUserContentController
     
     init() {
         let script = """
     window.appReady = true;
+    window.ReactNativeWebView = window.webkit.messageHandlers.SwiftUIWebView;
+    window.appData = {
+      user: {
+        token: '',
+        colorScheme: 'light',
+        colors: {},
+        inset: { top: 0, right: 0, bottom: 0, left: 0 },
+        profile: {
+          basicProfile: {
+            app_avatar_url: '',
+            department: '',
+            department_id: '',
+            head_pic_url: '',
+            max_role_level: 0,
+            message: '',
+            name: '',
+            status: 0,
+          },
+          entireProfile: {
+            base_info: {
+                xb: {}
+            },
+            is_teacher: false,
+            message: '',
+            status: 0,
+          },
+        },
+      }
+    };
     """
 
         let userScript = WKUserScript(source: script, injectionTime: .atDocumentStart, forMainFrameOnly: true)
@@ -45,13 +74,18 @@ struct ContentView: View {
         contentController.addUserScript(userScript)
         
         self.contentController = contentController
+
     }
     
+    func onMessage(message: WKScriptMessage) {
+        print(message.name, message.body)
+    }
     
     var body: some View {
         navigationToolbar
         Divider()
-        WebView(action: $action, state: $state, contentController: self.contentController).onAppear(perform: onLoad)
+        WebView(action: $action, state: $state, contentController: self.contentController,
+                onMessage: onMessage).onAppear(perform: onLoad)
             .handlesExternalEvents(preferring: Set(arrayLiteral: "*"), allowing: Set(arrayLiteral: "*"))
             .onOpenURL(perform: {scheme in
                 print(scheme)
