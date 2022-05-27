@@ -29,13 +29,13 @@
 		C90583A0283F4BFC00BCF7CB /* vincuApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = vincuApp.swift; sourceTree = "<group>"; };
 		C90583A1283F4BFC00BCF7CB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C90583A2283F4BFD00BCF7CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C90583AD283F4BFD00BCF7CB /* vincu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vincu.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C90583AD283F4BFD00BCF7CB /* Vincu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vincu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C90583AF283F4BFD00BCF7CB /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		C90583C0283F4BFD00BCF7CB /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C90583C4283F4BFD00BCF7CB /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		C90583C6283F4BFD00BCF7CB /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
 		C90583DC283F4C4900BCF7CB /* SwiftUIWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIWebView.swift; sourceTree = "<group>"; };
-		C90583DF283FAF4800BCF7CB /* vincu--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "vincu--macOS--Info.plist"; sourceTree = "<group>"; };
+		C90583DF283FAF4800BCF7CB /* Vincu--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Vincu--macOS--Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +59,7 @@
 		C905839A283F4BFC00BCF7CB = {
 			isa = PBXGroup;
 			children = (
-				C90583DF283FAF4800BCF7CB /* vincu--macOS--Info.plist */,
+				C90583DF283FAF4800BCF7CB /* Vincu--macOS--Info.plist */,
 				C905839F283F4BFC00BCF7CB /* Shared */,
 				C90583AE283F4BFD00BCF7CB /* macOS */,
 				C90583C3283F4BFD00BCF7CB /* Tests macOS */,
@@ -81,7 +81,7 @@
 		C90583A8283F4BFD00BCF7CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C90583AD283F4BFD00BCF7CB /* vincu.app */,
+				C90583AD283F4BFD00BCF7CB /* Vincu.app */,
 				C90583C0283F4BFD00BCF7CB /* Tests macOS.xctest */,
 			);
 			name = Products;
@@ -107,9 +107,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C90583AC283F4BFD00BCF7CB /* vincu (macOS) */ = {
+		C90583AC283F4BFD00BCF7CB /* Vincu (macOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C90583D3283F4BFD00BCF7CB /* Build configuration list for PBXNativeTarget "vincu (macOS)" */;
+			buildConfigurationList = C90583D3283F4BFD00BCF7CB /* Build configuration list for PBXNativeTarget "Vincu (macOS)" */;
 			buildPhases = (
 				C90583A9283F4BFD00BCF7CB /* Sources */,
 				C90583AA283F4BFD00BCF7CB /* Frameworks */,
@@ -119,9 +119,9 @@
 			);
 			dependencies = (
 			);
-			name = "vincu (macOS)";
+			name = "Vincu (macOS)";
 			productName = "vincu (macOS)";
-			productReference = C90583AD283F4BFD00BCF7CB /* vincu.app */;
+			productReference = C90583AD283F4BFD00BCF7CB /* Vincu.app */;
 			productType = "com.apple.product-type.application";
 		};
 		C90583BF283F4BFD00BCF7CB /* Tests macOS */ = {
@@ -150,7 +150,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1340;
 				TargetAttributes = {
 					C90583AC283F4BFD00BCF7CB = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -161,7 +161,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C905839E283F4BFC00BCF7CB /* Build configuration list for PBXProject "vincu" */;
+			buildConfigurationList = C905839E283F4BFC00BCF7CB /* Build configuration list for PBXProject "Vincu" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -174,7 +174,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C90583AC283F4BFD00BCF7CB /* vincu (macOS) */,
+				C90583AC283F4BFD00BCF7CB /* Vincu (macOS) */,
 				C90583BF283F4BFD00BCF7CB /* Tests macOS */,
 			);
 		};
@@ -223,7 +223,7 @@
 /* Begin PBXTargetDependency section */
 		C90583C2283F4BFD00BCF7CB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C90583AC283F4BFD00BCF7CB /* vincu (macOS) */;
+			target = C90583AC283F4BFD00BCF7CB /* Vincu (macOS) */;
 			targetProxy = C90583C1283F4BFD00BCF7CB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -349,13 +349,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZM57HELHSL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "vincu--macOS--Info.plist";
+				INFOPLIST_FILE = "Vincu--macOS--Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -365,7 +366,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ncuhome.vincu;
-				PRODUCT_NAME = vincu;
+				PRODUCT_NAME = Vincu;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -379,13 +380,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZM57HELHSL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "vincu--macOS--Info.plist";
+				INFOPLIST_FILE = "Vincu--macOS--Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -395,7 +397,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ncuhome.vincu;
-				PRODUCT_NAME = vincu;
+				PRODUCT_NAME = Vincu;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -441,7 +443,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C905839E283F4BFC00BCF7CB /* Build configuration list for PBXProject "vincu" */ = {
+		C905839E283F4BFC00BCF7CB /* Build configuration list for PBXProject "Vincu" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C90583CE283F4BFD00BCF7CB /* Debug */,
@@ -450,7 +452,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C90583D3283F4BFD00BCF7CB /* Build configuration list for PBXNativeTarget "vincu (macOS)" */ = {
+		C90583D3283F4BFD00BCF7CB /* Build configuration list for PBXNativeTarget "Vincu (macOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C90583D4283F4BFD00BCF7CB /* Debug */,
