@@ -66,15 +66,14 @@ struct ContentView: View {
       }
     };
     """
-
+        
         let userScript = WKUserScript(source: script, injectionTime: .atDocumentStart, forMainFrameOnly: true)
         
         let contentController = WKUserContentController()
-            
+        
         contentController.addUserScript(userScript)
         
         self.contentController = contentController
-
     }
     
     func onMessage(message: WKScriptMessage) {
@@ -85,20 +84,24 @@ struct ContentView: View {
         navigationToolbar
         Divider()
         WebView(action: $action, state: $state, contentController: self.contentController,
-                onMessage: onMessage).onAppear(perform: onLoad)
-            .handlesExternalEvents(preferring: Set(arrayLiteral: "*"), allowing: Set(arrayLiteral: "*"))
-            .onOpenURL(perform: {scheme in
-                print(scheme)
-                let url = scheme.query("url")
-                
- 
-                if let nextUrl = url {
-                    if nextUrl.isValidURL {
-                        address = nextUrl;
-                        onLoad()
+                onMessage: onMessage).onAppear(perform: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                action = .customUserAgent("Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.Ï15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1")
+            }
+            onLoad()
+        })
+                .handlesExternalEvents(preferring: Set(arrayLiteral: "*"), allowing: Set(arrayLiteral: "*"))
+                .onOpenURL(perform: {scheme in
+                    print(scheme)
+                    let url = scheme.query("url")
+                    
+                    if let nextUrl = url {
+                        if nextUrl.isValidURL {
+                            address = nextUrl;
+                            onLoad()
+                        }
                     }
-                }
-            })
+                })
     }
     
     func onLoad() {
@@ -109,6 +112,16 @@ struct ContentView: View {
     
     private var navigationToolbar: some View {
         HStack(spacing: 10) {
+            Button(action: {
+                action = .goBack
+            }) {
+                if #available(iOS 14, macOS 11, *) {
+                    Image(systemName: "chevron.left")
+                        .imageScale(.large)
+                } else {
+                    Text("<")
+                }
+            }.disabled(!state.canGoBack)
             TextField("Address", text: $address)
                 .onSubmit {
                     onLoad()
@@ -136,16 +149,7 @@ struct ContentView: View {
                 }
             }
             if state.canGoBack {
-                Button(action: {
-                    action = .goBack
-                }) {
-                    if #available(iOS 14, macOS 11, *) {
-                        Image(systemName: "chevron.left")
-                            .imageScale(.large)
-                    } else {
-                        Text("<")
-                    }
-                }
+                
             }
             if state.canGoForward {
                 Button(action: {

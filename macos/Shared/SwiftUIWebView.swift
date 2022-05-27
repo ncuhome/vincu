@@ -6,6 +6,7 @@
  - Add contentController: WKUserContentController? arg for WebView
  - Handle window.open, <a target="__blank" />
  - onMessage, handlerName args for WebView for communication between JS and Swift
+ - Add customUserAgent to WebViewAction
  */
 
 import SwiftUI
@@ -25,8 +26,8 @@ public enum WebViewAction: Equatable {
          reload,
          goBack,
          goForward,
-         evaluateJS(String, (Result<Any?, Error>) -> Void)
-    
+         evaluateJS(String, (Result<Any?, Error>) -> Void),
+         customUserAgent(String)
     
     public static func == (lhs: WebViewAction, rhs: WebViewAction) -> Bool {
         if case .idle = lhs,
@@ -391,8 +392,6 @@ public struct WebView: NSViewRepresentable {
             configuration.userContentController.add(context.coordinator, name: "SwiftUIWebView")
         }
         
-        
-        
         let webView = WKWebView(frame: CGRect.zero, configuration: configuration)
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
@@ -426,7 +425,10 @@ public struct WebView: NSViewRepresentable {
                     callback(.success(result))
                 }
             }
+        case .customUserAgent(let userAgent):
+            uiView.customUserAgent = userAgent
         }
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             action = .idle
         }
