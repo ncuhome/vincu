@@ -8,6 +8,8 @@
 
 - Windows, WinUI
 
+- Browser, [Chrome Extension](https://developer.chrome.com/docs/extensions/mv3/) or [Tampermonkey](https://www.tampermonkey.net/documentation.php#_match)
+
 ## TODO
 
 - [] 同步 Webview 功能，与 iNCU 对齐。

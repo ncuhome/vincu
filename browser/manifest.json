@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/chrome-manifest",
+  "name": "Vincu",
+  "description": "Virtual iNCU",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "run_at": "document_start",
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "match_about_blank": true
+    }
+  ],
+  "web_accessible_resources": [{
+    "resources": ["inject-script.js"],
+    "matches": ["<all_urls>"]
+  }]
+}
